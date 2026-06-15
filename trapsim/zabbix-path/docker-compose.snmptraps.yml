@@ -1,0 +1,37 @@
+# docker-compose.snmptraps.yml — PATH A: realistic SNMP traps through Zabbix.
+#
+# Overlay for your existing Zabbix compose project. It adds the official
+# zabbix-snmptraps container (snmptrapd on udp/162) which writes received traps
+# to a shared volume that the Zabbix server reads.
+#
+#   docker compose -f your-zabbix-compose.yml -f docker-compose.snmptraps.yml up -d
+#
+# TWO changes you must also make on your existing zabbix-server service:
+#   environment:
+#     ZBX_ENABLE_SNMP_TRAPS: "true"        # sets StartSNMPTrapper=1 + SNMPTrapperFile
+#   volumes:
+#     - snmptraps:/var/lib/zabbix/snmptraps:ro   # read the same log the trap container writes
+#
+# (ZBX_ENABLE_SNMP_TRAPS is the easily-missed switch — without it the server
+#  never starts the SNMP trapper and traps land in the log but never become items.)
+
+services:
+  zabbix-snmptraps:
+    image: zabbix/zabbix-snmptraps:alpine-7.0-latest
+    container_name: cep-zabbix-snmptraps
+    ports:
+      - "162:1162/udp"          # host udp/162 -> container's snmptrapd (1162 inside)
+    volumes:
+      - snmptraps:/var/lib/zabbix/snmptraps
+      - ./snmptrapd.conf:/etc/snmp/snmptrapd.conf:ro   # community auth (see file)
+    networks: [cep]
+    restart: unless-stopped
+
+volumes:
+  snmptraps:
+    name: cep-snmptraps
+
+networks:
+  cep:
+    external: true
+    name: cep-demo-net          # same network the sidecar/compose uses

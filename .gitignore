@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.log
+# generated, but kept tracked for convenience; uncomment to ignore:
+# topology/cep-demo.clab.yml
+# reporting/results.json
+# reporting/report.html
+clab-cep-demo/
+.env

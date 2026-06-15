@@ -1,0 +1,5 @@
+{
+  "_comment": "Mock fault state for `monitor.py --mock`: spur-a1 stopped, so spur-a2/a3 loopbacks are unreachable over the data plane (real OSPF behaviour). Edit to model other faults.",
+  "stopped": ["spur-a1"],
+  "unreachable_lo": ["10.255.0.32", "10.255.0.33"]
+}

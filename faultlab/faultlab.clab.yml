@@ -1,0 +1,67 @@
+name: cep-faultlab
+topology:
+  nodes:
+    core01:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/core01/frr.conf:/etc/frr/frr.conf
+        - configs/core01/daemons:/etc/frr/daemons
+    core02:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/core02/frr.conf:/etc/frr/frr.conf
+        - configs/core02/daemons:/etc/frr/daemons
+    dist01:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/dist01/frr.conf:/etc/frr/frr.conf
+        - configs/dist01/daemons:/etc/frr/daemons
+    acc-a1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/acc-a1/frr.conf:/etc/frr/frr.conf
+        - configs/acc-a1/daemons:/etc/frr/daemons
+    acc-a4:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/acc-a4/frr.conf:/etc/frr/frr.conf
+        - configs/acc-a4/daemons:/etc/frr/daemons
+    spur-a1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/spur-a1/frr.conf:/etc/frr/frr.conf
+        - configs/spur-a1/daemons:/etc/frr/daemons
+    spur-a2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/spur-a2/frr.conf:/etc/frr/frr.conf
+        - configs/spur-a2/daemons:/etc/frr/daemons
+    spur-a3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      binds:
+        - configs/spur-a3/frr.conf:/etc/frr/frr.conf
+        - configs/spur-a3/daemons:/etc/frr/daemons
+    probe:
+      kind: linux
+      image: alpine:3.20
+      exec:
+        - ip addr add 10.0.9.2/30 dev eth1
+        - ip route replace default via 10.0.9.1
+  links:
+    - endpoints: ["core01:eth1", "core02:eth1"]
+    - endpoints: ["core01:eth2", "dist01:eth1"]
+    - endpoints: ["core02:eth2", "dist01:eth2"]
+    - endpoints: ["dist01:eth3", "acc-a1:eth1"]
+    - endpoints: ["dist01:eth4", "acc-a4:eth1"]
+    - endpoints: ["acc-a4:eth2", "spur-a1:eth1"]
+    - endpoints: ["spur-a1:eth2", "spur-a2:eth1"]
+    - endpoints: ["spur-a2:eth2", "spur-a3:eth1"]
+    - endpoints: ["core01:eth9", "probe:eth1"]

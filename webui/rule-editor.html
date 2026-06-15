@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CEP Rule Editor</title>
+<link rel="stylesheet" href="https://unpkg.com/@xyflow/react@12.3.5/dist/style.css"/>
+<style>
+  :root{--bg:#0b0f17;--panel:#131a26;--line:#1f2a3a;--ink:#e6edf6;--muted:#7c8aa0;
+        --source:#60a5fa;--window:#fbbf24;--topo:#34d399;--flap:#a78bfa;--action:#f2495c;--accent:#5b8def}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  header{display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--panel)}
+  header h1{font-size:15px;font-weight:650}
+  header .tag{color:var(--muted);font-size:12px}
+  .wrap{flex:1;display:flex;min-height:0}
+  .palette{width:170px;border-right:1px solid var(--line);background:var(--panel);padding:14px}
+  .palette h2,aside h2{font-size:10px;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);margin:4px 0 10px}
+  .palette button{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 11px;border:1px solid var(--line);border-left-width:3px;background:#0f1622;color:var(--ink);border-radius:7px;cursor:pointer;font-size:12.5px}
+  .palette button:hover{background:#13203a}
+  #flow{flex:1;min-width:0}
+  aside{width:320px;border-left:1px solid var(--line);background:var(--panel);padding:16px;overflow-y:auto;display:flex;flex-direction:column}
+  label{display:block;font-size:11px;color:var(--muted);margin:10px 0 3px}
+  input,select{width:100%;padding:7px 9px;background:#0f1622;border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:13px}
+  .yaml{flex:1;margin-top:12px;background:#0a0e15;border:1px solid var(--line);border-radius:8px;padding:12px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#aeb9ca;white-space:pre;overflow:auto;min-height:140px}
+  .row{display:flex;gap:8px;margin-top:10px}
+  .row button{flex:1;padding:9px;border:1px solid var(--line);background:#0f1622;color:var(--ink);border-radius:7px;cursor:pointer;font-size:12.5px}
+  .row button.primary{border-color:var(--accent);background:#13203a}
+  .cep-node{border-radius:9px;background:#0f1622;border:1px solid var(--line);min-width:150px;font-size:12px;overflow:hidden}
+  .cep-node .hd{padding:6px 10px;font-weight:650;color:#0b0f17;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+  .cep-node .bd{padding:8px 10px;color:#aeb9ca;font-size:11px}
+  .hint{color:var(--muted);font-size:11px;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>CEP Rule Editor</h1>
+  <span class="tag">author correlation rules as a graph · exports the engine's rules.yaml</span>
+</header>
+<div class="wrap">
+  <div class="palette">
+    <h2>Add node</h2>
+    <button style="border-left-color:var(--source)" onclick="window._add('source')">Event Source</button>
+    <button style="border-left-color:var(--window)" onclick="window._add('window')">Window</button>
+    <button style="border-left-color:var(--topo)" onclick="window._add('topology')">Topology Join</button>
+    <button style="border-left-color:var(--flap)" onclick="window._add('flap')">Flap Dampener</button>
+    <button style="border-left-color:var(--action)" onclick="window._add('action')">Action</button>
+    <p class="hint">Wire Source → Window → Topology Join → Action for reachability RCA, or Source → Flap Dampener → Action for flap suppression.</p>
+  </div>
+  <div id="flow"></div>
+  <aside>
+    <h2>Inspector</h2>
+    <div id="inspector"><p class="hint">Select a node to edit its parameters.</p></div>
+    <h2 style="margin-top:18px">rules.yaml (live)</h2>
+    <div class="yaml" id="yaml">—</div>
+    <div class="row">
+      <button class="primary" onclick="window._export()">Download</button>
+      <button onclick="window._copy()">Copy</button>
+      <button onclick="window._reset()">Reset</button>
+    </div>
+  </aside>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "react": "https://esm.sh/react@18.3.1",
+  "react-dom": "https://esm.sh/react-dom@18.3.1",
+  "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+  "@xyflow/react": "https://esm.sh/@xyflow/react@12.3.5?deps=react@18.3.1,react-dom@18.3.1",
+  "htm": "https://esm.sh/htm@3.1.1",
+  "js-yaml": "https://esm.sh/js-yaml@4.1.0"
+}}
+</script>
+
+<script type="module">
+import React, { useState, useCallback, useRef } from "react";
+import { createRoot } from "react-dom/client";
+import { ReactFlow, Background, Controls, MiniMap, addEdge,
+         useNodesState, useEdgesState, Handle, Position } from "@xyflow/react";
+import htm from "htm";
+import yaml from "js-yaml";
+const html = htm.bind(React.createElement);
+
+const COLORS = {source:"#60a5fa",window:"#fbbf24",topology:"#34d399",flap:"#a78bfa",action:"#f2495c"};
+const TITLES = {source:"Event Source",window:"Window",topology:"Topology Join",flap:"Flap Dampener",action:"Action"};
+const DEFAULTS = {
+  source:{kinds:["UNREACHABLE","NODE_DOWN"]},
+  window:{window_s:60},
+  topology:{source_of_truth:"nautobot",join:"reachability"},
+  flap:{threshold:4,group_by:"device,interface"},
+  action:{action:"suppress_symptoms"},
+};
+
+// ---- graph -> rules.yaml (PURE; also unit-tested in node) ------------------
+function serialize(nodes){
+  const find = t => nodes.find(n => n.data.type === t);
+  const win = find("window"), flap = find("flap"), src = find("source"), act = find("action");
+  const out = {
+    window_s: win ? Number(win.data.params.window_s)||60 : 60,
+    flap_threshold: flap ? Number(flap.data.params.threshold)||4 : 4,
+    rules: [],
+  };
+  if (find("topology")){
+    out.rules.push({
+      name:"topology_reachability",
+      when:{ root_kind:"NODE_DOWN",
+             symptom_kinds:(src && src.data.params.kinds) || ["UNREACHABLE","NODE_DOWN"] },
+      join:"graph.reachability",
+      action:(act && act.data.params.action) || "suppress_symptoms",
+    });
+  }
+  if (flap){
+    out.rules.push({
+      name:"flap_dampening",
+      when:{ kinds:["IF_FLAP","LINK_DOWN","LINK_UP"] },
+      group_by:(flap.data.params.group_by||"device,interface").split(",").map(s=>s.trim()),
+      action:"dampen",
+    });
+  }
+  return out;
+}
+window.__serialize = serialize;   // exposed for the node-side unit test
+
+// ---- custom node -----------------------------------------------------------
+function CepNode({ data }){
+  const c = COLORS[data.type];
+  const summary = Object.entries(data.params).map(([k,v]) =>
+    `${k}: ${Array.isArray(v)?v.join("/"):v}`).join("\n");
+  return html`
+    <div class="cep-node" style=${{borderColor:c+"66"}}>
+      ${data.type!=="source" && html`<${Handle} type="target" position=${Position.Left}/>`}
+      <div class="hd" style=${{background:c}}>${TITLES[data.type]}</div>
+      <div class="bd">${summary || "—"}</div>
+      ${data.type!=="action" && html`<${Handle} type="source" position=${Position.Right}/>`}
+    </div>`;
+}
+const nodeTypes = { cep: CepNode };
+
+// ---- seed graph = the two shipped rules ------------------------------------
+const seedNodes = () => ([
+  mk("n1","source",{x:40,y:60}), mk("n2","window",{x:250,y:60}),
+  mk("n3","topology",{x:450,y:60}), mk("n4","action",{x:670,y:60}),
+  mk("n5","source",{x:40,y:260},{kinds:["IF_FLAP"]}), mk("n6","flap",{x:250,y:260}),
+  mk("n7","action",{x:470,y:260},{action:"dampen"}),
+]);
+const seedEdges = () => ([
+  e("n1","n2"),e("n2","n3"),e("n3","n4"),e("n5","n6"),e("n6","n7"),
+]);
+function mk(id,type,pos,override){
+  return { id, type:"cep", position:pos,
+    data:{ type, params:{...structuredClone(DEFAULTS[type]), ...(override||{})} } };
+}
+function e(s,t){ return { id:`${s}-${t}`, source:s, target:t, animated:true,
+  style:{stroke:"#5b8def"} }; }
+
+// ---- app -------------------------------------------------------------------
+let idc = 100;
+function App(){
+  const [nodes,setNodes,onNodesChange] = useNodesState(seedNodes());
+  const [edges,setEdges,onEdgesChange] = useEdgesState(seedEdges());
+  const [sel,setSel] = useState(null);
+  const nodesRef = useRef(nodes); nodesRef.current = nodes;
+
+  const onConnect = useCallback(p => setEdges(es => addEdge(
+    {...p, animated:true, style:{stroke:"#5b8def"}}, es)), [setEdges]);
+
+  const refreshYaml = useCallback(()=>{
+    try { document.getElementById("yaml").textContent =
+      yaml.dump(serialize(nodesRef.current), {sortKeys:false}); }
+    catch(e){ document.getElementById("yaml").textContent = "// "+e.message; }
+  },[]);
+  React.useEffect(()=>{ refreshYaml(); });
+
+  const addNode = useCallback(type=>{
+    const id="g"+(idc++);
+    setNodes(ns=>[...ns, mk(id,type,{x:120+Math.random()*240,y:120+Math.random()*200})]);
+  },[setNodes]);
+
+  const setParam = useCallback((id,key,val)=>{
+    setNodes(ns=>ns.map(n=> n.id===id
+      ? {...n, data:{...n.data, params:{...n.data.params,[key]:val}}} : n));
+  },[setNodes]);
+
+  // expose palette/toolbar handlers to the plain-HTML buttons
+  window._add = addNode;
+  window._reset = ()=>{ setNodes(seedNodes()); setEdges(seedEdges()); setSel(null); };
+  window._copy = ()=> navigator.clipboard.writeText(document.getElementById("yaml").textContent);
+  window._export = ()=>{
+    const blob = new Blob([document.getElementById("yaml").textContent],{type:"text/yaml"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="rules.yaml"; a.click();
+  };
+
+  // render inspector imperatively into the side panel
+  React.useEffect(()=>{
+    const host=document.getElementById("inspector"); if(!host) return;
+    if(!sel){ host.innerHTML='<p class="hint">Select a node to edit its parameters.</p>'; return; }
+    const node=nodes.find(n=>n.id===sel); if(!node){ host.innerHTML=""; return; }
+    host.innerHTML="";
+    const t=document.createElement("div");
+    t.innerHTML=`<div style="font-weight:650;margin-bottom:4px">${TITLES[node.data.type]}</div>`;
+    host.appendChild(t);
+    for(const [k,v] of Object.entries(node.data.params)){
+      const l=document.createElement("label"); l.textContent=k; host.appendChild(l);
+      if(node.data.type==="action" && k==="action"){
+        const s=document.createElement("select");
+        ["suppress_symptoms","add_tag","set_severity","dampen","stop"].forEach(o=>{
+          const op=document.createElement("option"); op.value=o; op.textContent=o;
+          if(o===v) op.selected=true; s.appendChild(op); });
+        s.onchange=ev=>setParam(node.id,k,ev.target.value); host.appendChild(s);
+      } else {
+        const i=document.createElement("input");
+        i.value=Array.isArray(v)?v.join(","):v;
+        i.onchange=ev=>{ const raw=ev.target.value;
+          setParam(node.id,k, Array.isArray(v)?raw.split(",").map(s=>s.trim()):raw); };
+        host.appendChild(i);
+      }
+    }
+  });
+
+  return html`
+    <${ReactFlow} nodes=${nodes} edges=${edges} nodeTypes=${nodeTypes}
+        onNodesChange=${onNodesChange} onEdgesChange=${onEdgesChange}
+        onConnect=${onConnect} onNodeClick=${(_,n)=>setSel(n.id)}
+        onPaneClick=${()=>setSel(null)} fitView
+        defaultEdgeOptions=${{animated:true}} proOptions=${{hideAttribution:true}}>
+      <${Background} color="#1f2a3a" gap=${18}/>
+      <${Controls}/>
+      <${MiniMap} pannable zoomable maskColor="#0b0f17cc"
+          nodeColor=${n=>COLORS[n.data.type]||"#888"}/>
+    <//>`;
+}
+
+createRoot(document.getElementById("flow")).render(html`<${App}/>`);
+</script>
+</body>
+</html>

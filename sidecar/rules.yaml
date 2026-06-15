@@ -1,0 +1,28 @@
+# CEP rule definitions (data, not code) — consumed by the engine.
+# These are the deterministic, version-controlled equivalent of a TeMIP/UCA EBC
+# Drools ruleset. Editable here or, in the richer UI, via the React Flow editor.
+
+window_s: 60            # correlation window: only alarms within Δt of a root
+flap_threshold: 4       # transitions on one interface within window_s => FLAPPING
+
+rules:
+  - name: topology_reachability
+    description: >
+      Group NODE_DOWN / UNREACHABLE alarms by dependency-graph reachability to
+      the core. Devices that can no longer reach any core become SYMPTOM and are
+      attributed to the nearest failed ancestor (the ROOT_CAUSE). RSTP rings and
+      dual-homing create alternate paths, so survivable failures suppress nothing.
+    when:
+      root_kind: NODE_DOWN
+      symptom_kinds: [UNREACHABLE, NODE_DOWN]
+    join: graph.reachability        # the networkx reachability computation
+    action: suppress_symptoms
+
+  - name: flap_dampening
+    description: >
+      Collapse repeated IF_FLAP / LINK_DOWN / LINK_UP transitions on a single
+      interface into one FLAPPING alarm once the threshold is crossed in-window.
+    when:
+      kinds: [IF_FLAP, LINK_DOWN, LINK_UP]
+    group_by: [device, interface]
+    action: dampen

@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CEP Correlation — Test Report</title>
+<style>
+  :root{--bg:#0b0f17;--panel:#131a26;--line:#1f2a3a;--ink:#e6edf6;--muted:#7c8aa0;--accent:#2dd4a7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;padding:40px 20px;max-width:860px;margin:0 auto}
+  header{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px}
+  h1{font-size:20px;font-weight:650} .subt{color:var(--muted);font-size:13px;margin-top:4px}
+  .ring{position:relative;width:96px;height:96px}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--accent)}
+  .stats{display:flex;gap:12px;margin:22px 0 28px}
+  .stat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .stat .v{font-size:26px;font-weight:700}
+  .stat .l{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-top:2px}
+  .case{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0}
+  .case-h{display:flex;align-items:center;gap:12px}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.5px;border:1px solid;border-radius:6px;padding:2px 8px}
+  .name{font-weight:600;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+  .dur{margin-left:auto;color:var(--muted);font-size:12px}
+  .sum{color:#aeb9ca;font-size:13.5px;margin-top:8px}
+  pre.fail{margin-top:10px;background:#1a0e12;border:1px solid #3a2530;border-radius:8px;padding:12px;color:#f7a5b0;font-size:12px;overflow:auto;white-space:pre-wrap}
+  footer{color:var(--muted);font-size:12px;margin-top:28px;text-align:center}
+</style></head><body>
+<header>
+  <div><h1>CEP Correlation — Test Report</h1>
+    <div class="subt">Executable specification &middot; every sales-pitch claim is asserted here</div></div>
+  <div class="ring">
+    <svg width="96" height="96"><circle cx="48" cy="48" r="42" fill="none" stroke="#1f2a3a" stroke-width="8"/>
+      <circle cx="48" cy="48" r="42" fill="none" stroke="#2dd4a7" stroke-width="8"
+        stroke-linecap="round" stroke-dasharray="263.9"
+        stroke-dashoffset="0.0"/></svg>
+    <div class="pct">100%</div>
+  </div>
+</header>
+<div class="stats">
+  <div class="stat"><div class="v" style="color:#2dd4a7">15</div><div class="l">Passed</div></div>
+  <div class="stat"><div class="v" style="color:#f2495c">0</div><div class="l">Failed</div></div>
+  <div class="stat"><div class="v" style="color:#f5a524">0</div><div class="l">Skipped</div></div>
+  <div class="stat"><div class="v">283<span style="font-size:13px;color:var(--muted)"> ms</span></div><div class="l">Duration</div></div>
+</div>
+
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_spur_cascade</span>
+            <span class="dur">0.9 ms</span>
+          </div>
+          <div class="sum">Unprotected spur head fails — every node down the chain is suppressed as a symptom.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_dist_blackhole_high_ratio</span>
+            <span class="dur">0.7 ms</span>
+          </div>
+          <div class="sum">Ring gateway fails — whole ring plus its spurs collapse to one root cause (&gt;80% suppression).</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_ring_member_protected</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum">One RSTP ring member fails — peers reach the core another way and are NOT suppressed.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_core_redundant_no_suppression</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum">One core of a dual-homed pair fails — nothing downstream is lost, so nothing is suppressed.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_precision_independent_faults</span>
+            <span class="dur">0.8 ms</span>
+          </div>
+          <div class="sum">Two unrelated faults at once — each attributes to its own root cause, no cross-contamination.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_flap_dampening</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum">Interface flap storm collapses into a single FLAPPING alarm.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_determinism</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum">Identical input ordering yields byte-identical correlation output — no scoring, no ML.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_classify_enrichment_contract</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum">Topology enrichment (/classify): cause, symptom and RSTP-protected independent.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_monitor_classify_maps_states</span>
+            <span class="dur">0.1 ms</span>
+          </div>
+          <div class="sum">Stopped container -&gt; NODE_DOWN; up-but-cutoff -&gt; UNREACHABLE; ok -&gt; HEALTHY.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_real_fault_chain_spur_cascade</span>
+            <span class="dur">0.6 ms</span>
+          </div>
+          <div class="sum">spur-a1 down + a2/a3 cut off -&gt; a1 root cause, a2/a3 symptoms; sibling clean.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_recovery_clears</span>
+            <span class="dur">0.5 ms</span>
+          </div>
+          <div class="sum">A CLEAR event for a device removes its alarms.</div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_ber_oid_and_roundtrip</span>
+            <span class="dur">0.1 ms</span>
+          </div>
+          <div class="sum"></div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_standard_trap_build_parse_classify</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum"></div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_enterprise_placeholder_trap</span>
+            <span class="dur">0.2 ms</span>
+          </div>
+          <div class="sum"></div>
+          
+        </div>
+        <div class="case">
+          <div class="case-h">
+            <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
+            <span class="name">test_source_ip_fallback</span>
+            <span class="dur">0.1 ms</span>
+          </div>
+          <div class="sum"></div>
+          
+        </div>
+<footer>Generated 2026-06-14 12:32:20 &middot; CEP demo &middot; github.com/mmorrow24work/CEP</footer>
+</body></html>

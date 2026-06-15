@@ -1,0 +1,1079 @@
+site: demo-dc1
+summary:
+  device_count: 35
+  cable_count: 37
+  dependency_count: 35
+  rings: 3
+  spurs: 3
+devices:
+- name: core01
+  role: core
+  layer: L3
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.10
+  monitoring:
+  - agent
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to core02
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to dist01
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to dist02
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to dist03
+- name: core02
+  role: core
+  layer: L3
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.11
+  monitoring:
+  - agent
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to core01
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to dist01
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to dist02
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to dist03
+- name: dist01
+  role: distribution
+  layer: L3
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.12
+  monitoring:
+  - agent
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to core01
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to core02
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a1
+- name: dist02
+  role: distribution
+  layer: L3
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.13
+  monitoring:
+  - agent
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to core01
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to core02
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b1
+- name: dist03
+  role: distribution
+  layer: L3
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.14
+  monitoring:
+  - agent
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to core01
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to core02
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c1
+- name: pp-a
+  role: patch-panel
+  layer: passive
+  vendor: generic
+  platform: passive-24
+  site: demo-dc1
+  mgmt_ip: null
+  monitoring: []
+  protected: false
+  interfaces:
+  - name: front-acc-a1
+    enabled: true
+    type: 1000base-t
+    description: patch front
+  - name: rear-dist01
+    enabled: true
+    type: 1000base-t
+    description: patch rear
+- name: pp-b
+  role: patch-panel
+  layer: passive
+  vendor: generic
+  platform: passive-24
+  site: demo-dc1
+  mgmt_ip: null
+  monitoring: []
+  protected: false
+  interfaces:
+  - name: front-acc-b1
+    enabled: true
+    type: 1000base-t
+    description: patch front
+  - name: rear-dist02
+    enabled: true
+    type: 1000base-t
+    description: patch rear
+- name: pp-c
+  role: patch-panel
+  layer: passive
+  vendor: generic
+  platform: passive-24
+  site: demo-dc1
+  mgmt_ip: null
+  monitoring: []
+  protected: false
+  interfaces:
+  - name: front-acc-c1
+    enabled: true
+    type: 1000base-t
+    description: patch front
+  - name: rear-dist03
+    enabled: true
+    type: 1000base-t
+    description: patch rear
+- name: acc-a1
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.15
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to dist01
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a2
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a6
+- name: acc-a2
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.16
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a1
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a3
+- name: acc-a3
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.17
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a2
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a4
+- name: acc-a4
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.18
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a3
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a5
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-a1
+- name: acc-a5
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.19
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a4
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a6
+- name: acc-a6
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.20
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-a5
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-a1
+- name: acc-b1
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.21
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to dist02
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b2
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b6
+- name: acc-b2
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.22
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b1
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b3
+- name: acc-b3
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.23
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b2
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b4
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-b1
+- name: acc-b4
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.24
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b3
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b5
+- name: acc-b5
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.25
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b4
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b6
+- name: acc-b6
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.26
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-b5
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-b1
+- name: acc-c1
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.27
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to dist03
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c2
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c6
+- name: acc-c2
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.28
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c1
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c3
+- name: acc-c3
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.29
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c2
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c4
+- name: acc-c4
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.30
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c3
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c5
+- name: acc-c5
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.31
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c4
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c6
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-c1
+- name: acc-c6
+  role: access
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.32
+  monitoring:
+  - snmp
+  protected: true
+  interfaces:
+  - name: eth3
+    enabled: true
+    type: 1000base-t
+    description: to acc-c5
+  - name: eth2
+    enabled: true
+    type: 1000base-t
+    description: to acc-c1
+- name: spur-a1
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.33
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to acc-a4
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-a2
+- name: spur-a2
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.34
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-a1
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-a3
+- name: spur-a3
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.35
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-a2
+- name: spur-b1
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.36
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to acc-b3
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-b2
+- name: spur-b2
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.37
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-b1
+- name: spur-c1
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.38
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to acc-c5
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-c2
+- name: spur-c2
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.39
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-c1
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-c3
+- name: spur-c3
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.40
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-c2
+  - name: eth4
+    enabled: true
+    type: 1000base-t
+    description: to spur-c4
+- name: spur-c4
+  role: spur
+  layer: L2
+  vendor: FRR
+  platform: frr-9
+  site: demo-dc1
+  mgmt_ip: 10.0.0.41
+  monitoring:
+  - snmp
+  protected: false
+  interfaces:
+  - name: eth1
+    enabled: true
+    type: 1000base-t
+    description: to spur-c3
+cables:
+- a_device: core01
+  a_iface: eth1
+  b_device: core02
+  b_iface: eth1
+  kind: core
+  via_panel: null
+- a_device: dist01
+  a_iface: eth1
+  b_device: core01
+  b_iface: eth2
+  kind: uplink
+  via_panel: null
+- a_device: dist01
+  a_iface: eth2
+  b_device: core02
+  b_iface: eth2
+  kind: uplink
+  via_panel: null
+- a_device: dist02
+  a_iface: eth1
+  b_device: core01
+  b_iface: eth3
+  kind: uplink
+  via_panel: null
+- a_device: dist02
+  a_iface: eth2
+  b_device: core02
+  b_iface: eth3
+  kind: uplink
+  via_panel: null
+- a_device: dist03
+  a_iface: eth1
+  b_device: core01
+  b_iface: eth4
+  kind: uplink
+  via_panel: null
+- a_device: dist03
+  a_iface: eth2
+  b_device: core02
+  b_iface: eth4
+  kind: uplink
+  via_panel: null
+- a_device: acc-a1
+  a_iface: eth1
+  b_device: dist01
+  b_iface: eth3
+  kind: uplink
+  via_panel: pp-a
+- a_device: acc-a1
+  a_iface: eth2
+  b_device: acc-a2
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a2
+  a_iface: eth2
+  b_device: acc-a3
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a3
+  a_iface: eth2
+  b_device: acc-a4
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a4
+  a_iface: eth2
+  b_device: acc-a5
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a5
+  a_iface: eth2
+  b_device: acc-a6
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a6
+  a_iface: eth2
+  b_device: acc-a1
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b1
+  a_iface: eth1
+  b_device: dist02
+  b_iface: eth3
+  kind: uplink
+  via_panel: pp-b
+- a_device: acc-b1
+  a_iface: eth2
+  b_device: acc-b2
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b2
+  a_iface: eth2
+  b_device: acc-b3
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b3
+  a_iface: eth2
+  b_device: acc-b4
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b4
+  a_iface: eth2
+  b_device: acc-b5
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b5
+  a_iface: eth2
+  b_device: acc-b6
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-b6
+  a_iface: eth2
+  b_device: acc-b1
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c1
+  a_iface: eth1
+  b_device: dist03
+  b_iface: eth3
+  kind: uplink
+  via_panel: pp-c
+- a_device: acc-c1
+  a_iface: eth2
+  b_device: acc-c2
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c2
+  a_iface: eth2
+  b_device: acc-c3
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c3
+  a_iface: eth2
+  b_device: acc-c4
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c4
+  a_iface: eth2
+  b_device: acc-c5
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c5
+  a_iface: eth2
+  b_device: acc-c6
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-c6
+  a_iface: eth2
+  b_device: acc-c1
+  b_iface: eth3
+  kind: ring
+  via_panel: null
+- a_device: acc-a4
+  a_iface: eth4
+  b_device: spur-a1
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-a1
+  a_iface: eth4
+  b_device: spur-a2
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-a2
+  a_iface: eth4
+  b_device: spur-a3
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: acc-b3
+  a_iface: eth4
+  b_device: spur-b1
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-b1
+  a_iface: eth4
+  b_device: spur-b2
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: acc-c5
+  a_iface: eth4
+  b_device: spur-c1
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-c1
+  a_iface: eth4
+  b_device: spur-c2
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-c2
+  a_iface: eth4
+  b_device: spur-c3
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+- a_device: spur-c3
+  a_iface: eth4
+  b_device: spur-c4
+  b_iface: eth1
+  kind: spur
+  via_panel: null
+dependencies:
+- child: core01
+  parent: core02
+  relation: core-mesh
+  protected: true
+- child: core02
+  parent: core01
+  relation: core-mesh
+  protected: true
+- child: dist01
+  parent: core01
+  relation: uplink
+  protected: true
+- child: dist01
+  parent: core02
+  relation: uplink
+  protected: true
+- child: dist02
+  parent: core01
+  relation: uplink
+  protected: true
+- child: dist02
+  parent: core02
+  relation: uplink
+  protected: true
+- child: dist03
+  parent: core01
+  relation: uplink
+  protected: true
+- child: dist03
+  parent: core02
+  relation: uplink
+  protected: true
+- child: acc-a1
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-a2
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-a3
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-a4
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-a5
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-a6
+  parent: dist01
+  relation: ring-gateway
+  protected: false
+- child: acc-b1
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-b2
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-b3
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-b4
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-b5
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-b6
+  parent: dist02
+  relation: ring-gateway
+  protected: false
+- child: acc-c1
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: acc-c2
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: acc-c3
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: acc-c4
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: acc-c5
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: acc-c6
+  parent: dist03
+  relation: ring-gateway
+  protected: false
+- child: spur-a1
+  parent: acc-a4
+  relation: spur-chain
+  protected: false
+- child: spur-a2
+  parent: spur-a1
+  relation: spur-chain
+  protected: false
+- child: spur-a3
+  parent: spur-a2
+  relation: spur-chain
+  protected: false
+- child: spur-b1
+  parent: acc-b3
+  relation: spur-chain
+  protected: false
+- child: spur-b2
+  parent: spur-b1
+  relation: spur-chain
+  protected: false
+- child: spur-c1
+  parent: acc-c5
+  relation: spur-chain
+  protected: false
+- child: spur-c2
+  parent: spur-c1
+  relation: spur-chain
+  protected: false
+- child: spur-c3
+  parent: spur-c2
+  relation: spur-chain
+  protected: false
+- child: spur-c4
+  parent: spur-c3
+  relation: spur-chain
+  protected: false

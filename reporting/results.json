@@ -1,0 +1,131 @@
+{
+  "generated": "2026-06-14 13:51:52",
+  "duration_ms": 400.26,
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "skipped": 0,
+  "exit_status": 0,
+  "results": [
+    {
+      "name": "test_spur_cascade",
+      "nodeid": "tests/test_correlation.py::test_spur_cascade",
+      "outcome": "passed",
+      "summary": "Unprotected spur head fails \u2014 every node down the chain is suppressed as a symptom.",
+      "duration_ms": 0.88,
+      "longrepr": ""
+    },
+    {
+      "name": "test_dist_blackhole_high_ratio",
+      "nodeid": "tests/test_correlation.py::test_dist_blackhole_high_ratio",
+      "outcome": "passed",
+      "summary": "Ring gateway fails \u2014 whole ring plus its spurs collapse to one root cause (>80% suppression).",
+      "duration_ms": 0.7,
+      "longrepr": ""
+    },
+    {
+      "name": "test_ring_member_protected",
+      "nodeid": "tests/test_correlation.py::test_ring_member_protected",
+      "outcome": "passed",
+      "summary": "One RSTP ring member fails \u2014 peers reach the core another way and are NOT suppressed.",
+      "duration_ms": 0.28,
+      "longrepr": ""
+    },
+    {
+      "name": "test_core_redundant_no_suppression",
+      "nodeid": "tests/test_correlation.py::test_core_redundant_no_suppression",
+      "outcome": "passed",
+      "summary": "One core of a dual-homed pair fails \u2014 nothing downstream is lost, so nothing is suppressed.",
+      "duration_ms": 0.25,
+      "longrepr": ""
+    },
+    {
+      "name": "test_precision_independent_faults",
+      "nodeid": "tests/test_correlation.py::test_precision_independent_faults",
+      "outcome": "passed",
+      "summary": "Two unrelated faults at once \u2014 each attributes to its own root cause, no cross-contamination.",
+      "duration_ms": 0.69,
+      "longrepr": ""
+    },
+    {
+      "name": "test_flap_dampening",
+      "nodeid": "tests/test_correlation.py::test_flap_dampening",
+      "outcome": "passed",
+      "summary": "Interface flap storm collapses into a single FLAPPING alarm.",
+      "duration_ms": 0.2,
+      "longrepr": ""
+    },
+    {
+      "name": "test_determinism",
+      "nodeid": "tests/test_correlation.py::test_determinism",
+      "outcome": "passed",
+      "summary": "Identical input ordering yields byte-identical correlation output \u2014 no scoring, no ML.",
+      "duration_ms": 0.25,
+      "longrepr": ""
+    },
+    {
+      "name": "test_classify_enrichment_contract",
+      "nodeid": "tests/test_correlation.py::test_classify_enrichment_contract",
+      "outcome": "passed",
+      "summary": "Topology enrichment (/classify): cause, symptom and RSTP-protected independent.",
+      "duration_ms": 0.27,
+      "longrepr": ""
+    },
+    {
+      "name": "test_monitor_classify_maps_states",
+      "nodeid": "tests/test_faultlab.py::test_monitor_classify_maps_states",
+      "outcome": "passed",
+      "summary": "Stopped container -> NODE_DOWN; up-but-cutoff -> UNREACHABLE; ok -> HEALTHY.",
+      "duration_ms": 0.07,
+      "longrepr": ""
+    },
+    {
+      "name": "test_real_fault_chain_spur_cascade",
+      "nodeid": "tests/test_faultlab.py::test_real_fault_chain_spur_cascade",
+      "outcome": "passed",
+      "summary": "spur-a1 down + a2/a3 cut off -> a1 root cause, a2/a3 symptoms; sibling clean.",
+      "duration_ms": 0.48,
+      "longrepr": ""
+    },
+    {
+      "name": "test_recovery_clears",
+      "nodeid": "tests/test_faultlab.py::test_recovery_clears",
+      "outcome": "passed",
+      "summary": "A CLEAR event for a device removes its alarms.",
+      "duration_ms": 0.46,
+      "longrepr": ""
+    },
+    {
+      "name": "test_ber_oid_and_roundtrip",
+      "nodeid": "tests/test_trapsim.py::test_ber_oid_and_roundtrip",
+      "outcome": "passed",
+      "summary": "",
+      "duration_ms": 0.17,
+      "longrepr": ""
+    },
+    {
+      "name": "test_standard_trap_build_parse_classify",
+      "nodeid": "tests/test_trapsim.py::test_standard_trap_build_parse_classify",
+      "outcome": "passed",
+      "summary": "",
+      "duration_ms": 0.33,
+      "longrepr": ""
+    },
+    {
+      "name": "test_enterprise_placeholder_trap",
+      "nodeid": "tests/test_trapsim.py::test_enterprise_placeholder_trap",
+      "outcome": "passed",
+      "summary": "",
+      "duration_ms": 0.2,
+      "longrepr": ""
+    },
+    {
+      "name": "test_source_ip_fallback",
+      "nodeid": "tests/test_trapsim.py::test_source_ip_fallback",
+      "outcome": "passed",
+      "summary": "",
+      "duration_ms": 0.1,
+      "longrepr": ""
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: CEP
+    folder: CEP
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards

@@ -1,0 +1,72 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "title": "CEP — Correlation Performance",
+  "uid": "cep-perf",
+  "tags": ["cep"],
+  "timezone": "browser",
+  "refresh": "2s",
+  "time": {"from": "now-15m", "to": "now"},
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "type": "stat", "title": "Suppression ratio", "id": 1,
+      "gridPos": {"h": 6, "w": 6, "x": 0, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1,
+        "thresholds": {"steps": [
+          {"color": "red", "value": null},
+          {"color": "orange", "value": 0.5},
+          {"color": "green", "value": 0.8}]}}},
+      "options": {"colorMode": "background", "graphMode": "area"},
+      "targets": [{"expr": "cep_suppression_ratio", "refId": "A"}]
+    },
+    {
+      "type": "stat", "title": "Correlation latency", "id": 2,
+      "gridPos": {"h": 6, "w": 6, "x": 6, "y": 0},
+      "fieldConfig": {"defaults": {"unit": "ms", "decimals": 2,
+        "thresholds": {"steps": [
+          {"color": "green", "value": null},
+          {"color": "orange", "value": 10},
+          {"color": "red", "value": 50}]}}},
+      "options": {"colorMode": "background", "graphMode": "area"},
+      "targets": [{"expr": "cep_correlation_latency_ms", "refId": "A"}]
+    },
+    {
+      "type": "stat", "title": "Root causes", "id": 3,
+      "gridPos": {"h": 6, "w": 6, "x": 12, "y": 0},
+      "fieldConfig": {"defaults": {"color": {"fixedColor": "red", "mode": "fixed"}}},
+      "options": {"colorMode": "value", "graphMode": "none"},
+      "targets": [{"expr": "cep_alarms_root_causes", "refId": "A"}]
+    },
+    {
+      "type": "stat", "title": "Symptoms suppressed", "id": 4,
+      "gridPos": {"h": 6, "w": 6, "x": 18, "y": 0},
+      "fieldConfig": {"defaults": {"color": {"fixedColor": "blue", "mode": "fixed"}}},
+      "options": {"colorMode": "value", "graphMode": "area"},
+      "targets": [{"expr": "cep_alarms_symptoms", "refId": "A"}]
+    },
+    {
+      "type": "timeseries", "title": "Alarm states over time", "id": 5,
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 6},
+      "fieldConfig": {"defaults": {"custom": {"fillOpacity": 20, "stacking": {"mode": "normal"}}}},
+      "targets": [
+        {"expr": "cep_alarms_root_causes", "legendFormat": "root causes", "refId": "A"},
+        {"expr": "cep_alarms_symptoms", "legendFormat": "symptoms", "refId": "B"},
+        {"expr": "cep_alarms_active", "legendFormat": "active", "refId": "C"},
+        {"expr": "cep_alarms_flapping", "legendFormat": "flapping", "refId": "D"}
+      ]
+    },
+    {
+      "type": "timeseries", "title": "Ingest rate (alarms/sec)", "id": 6,
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 6},
+      "fieldConfig": {"defaults": {"unit": "ops", "custom": {"fillOpacity": 15}}},
+      "targets": [{"expr": "rate(cep_alarms_ingested_total[1m])", "legendFormat": "ingest/s", "refId": "A"}]
+    },
+    {
+      "type": "timeseries", "title": "Correlation latency (ms)", "id": 7,
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 15},
+      "fieldConfig": {"defaults": {"unit": "ms", "custom": {"fillOpacity": 10}}},
+      "targets": [{"expr": "cep_correlation_latency_ms", "legendFormat": "latency", "refId": "A"}]
+    }
+  ]
+}

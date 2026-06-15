@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CEP NOC — Topology Correlation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0f17; --panel:#131a26; --line:#1f2a3a; --ink:#e6edf6; --muted:#7c8aa0;
+    --ok:#2dd4a7; --active:#f5a524; --root:#f2495c; --symptom:#3a475c; --flap:#a78bfa; --accent:#5b8def;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  header{display:flex;align-items:center;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel)}
+  header h1{font-size:16px;font-weight:650;letter-spacing:.3px}
+  header .tag{color:var(--muted);font-size:12px}
+  .wrap{flex:1;display:flex;min-height:0}
+  #cy{flex:1;background:radial-gradient(circle at 50% 40%, #0f1622 0%, #0b0f17 70%)}
+  aside{width:330px;border-left:1px solid var(--line);background:var(--panel);padding:18px;overflow-y:auto}
+  .stat{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line)}
+  .stat .v{font-size:22px;font-weight:700}
+  .stat .v.big{font-size:34px}
+  .hl{color:var(--root)} .good{color:var(--ok)} .warn{color:var(--active)}
+  h2{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin:20px 0 8px}
+  button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--line);background:#0f1622;color:var(--ink);border-radius:8px;cursor:pointer;transition:.15s;font-size:13px}
+  button:hover{border-color:var(--accent);background:#13203a}
+  button small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+  button.clear{border-color:#3a2530;color:#f7a5b0}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+  .legend span{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .conn{font-size:11px;color:var(--muted);margin-left:auto}
+  .conn.on{color:var(--ok)}
+</style>
+</head>
+<body>
+<header>
+  <h1>CEP NOC</h1>
+  <span class="tag">Topology-aware alarm correlation · FRR demo network</span>
+  <span class="conn" id="conn">connecting…</span>
+</header>
+<div class="wrap">
+  <div id="cy"></div>
+  <aside>
+    <div class="stat"><span>Suppression ratio</span><span class="v big good" id="m-sup">0%</span></div>
+    <div class="stat"><span>Root causes</span><span class="v hl" id="m-root">0</span></div>
+    <div class="stat"><span>Symptoms suppressed</span><span class="v" id="m-sym">0</span></div>
+    <div class="stat"><span>Active alarms</span><span class="v warn" id="m-act">0</span></div>
+    <div class="stat"><span>Flapping (damped)</span><span class="v" id="m-flap">0</span></div>
+    <div class="stat"><span>Correlation latency</span><span class="v" id="m-lat">0 ms</span></div>
+
+    <h2>Fault scenarios</h2>
+    <div id="scenarios"></div>
+    <button class="clear" onclick="clearAll()">Clear all alarms</button>
+
+    <h2>Legend</h2>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--ok)"></i>Healthy</span>
+      <span><i class="dot" style="background:var(--root)"></i>Root cause</span>
+      <span><i class="dot" style="background:var(--active)"></i>Active</span>
+      <span><i class="dot" style="background:var(--symptom)"></i>Symptom (suppressed)</span>
+      <span><i class="dot" style="background:var(--flap)"></i>Flapping</span>
+    </div>
+  </aside>
+</div>
+
+<script>
+const API = (location.protocol==="file:" ? "http://localhost:8080" : "");
+const COLORS={ok:"#2dd4a7",active:"#f5a524",root:"#f2495c",symptom:"#3a475c",flap:"#a78bfa"};
+const ROLE_SHAPE={core:"hexagon",distribution:"round-rectangle",access:"ellipse",spur:"ellipse"};
+
+let cy;
+
+async function loadTopology(){
+  const t=await (await fetch(API+"/topology")).json();
+  const els=[];
+  for(const n of t.nodes){
+    els.push({data:{id:n.id,role:n.role,protected:n.protected,layer:n.layer},
+              classes:n.role});
+  }
+  for(const e of t.edges){
+    els.push({data:{id:e.source+"_"+e.target,source:e.source,target:e.target,
+                    relation:e.relation,protected:e.protected}});
+  }
+  cy=cytoscape({
+    container:document.getElementById("cy"),
+    elements:els,
+    style:[
+      {selector:"node",style:{
+        "background-color":COLORS.ok,"label":"data(id)","color":"#cdd9ea",
+        "font-size":"9px","text-valign":"bottom","text-margin-y":3,
+        "width":22,"height":22,"border-width":2,"border-color":"#0b0f17"}},
+      {selector:"node.core",style:{"shape":"hexagon","width":34,"height":34,"font-size":"11px"}},
+      {selector:"node.distribution",style:{"shape":"round-rectangle","width":30,"height":24,"font-size":"10px"}},
+      {selector:"node.spur",style:{"shape":"diamond"}},
+      {selector:"edge",style:{"width":1.4,"line-color":"#26334a","curve-style":"bezier",
+        "target-arrow-color":"#26334a","opacity":.6}},
+      {selector:"edge[?protected]",style:{"line-style":"dashed","line-color":"#2dd4a7","opacity":.5}},
+      {selector:".rc-edge",style:{"line-color":COLORS.root,"width":2.5,"opacity":.9,
+        "target-arrow-shape":"triangle","target-arrow-color":COLORS.root,"curve-style":"bezier"}},
+      {selector:"node:selected",style:{"border-color":"#5b8def","border-width":3}}
+    ],
+    layout:{name:"breadthfirst",roots:t.cores,directed:true,spacingFactor:1.15,padding:30}
+  });
+}
+
+function render(snap){
+  if(!cy) return;
+  const m=snap.metrics;
+  document.getElementById("m-sup").textContent=Math.round(m.suppression_ratio*100)+"%";
+  document.getElementById("m-root").textContent=m.root_causes;
+  document.getElementById("m-sym").textContent=m.symptoms;
+  document.getElementById("m-act").textContent=m.active;
+  document.getElementById("m-flap").textContent=m.flapping;
+  document.getElementById("m-lat").textContent=(m.last_latency_ms||0).toFixed(2)+" ms";
+
+  // reset
+  cy.nodes().forEach(n=>n.style("background-color",COLORS.ok).style("opacity",1));
+  cy.edges(".rc-edge").removeClass("rc-edge");
+
+  const byDev={};
+  for(const a of snap.alarms){ byDev[a.device]=a; }
+  for(const a of snap.alarms){
+    const node=cy.getElementById(a.device); if(node.empty())continue;
+    let c=COLORS.active, op=1;
+    if(a.state==="ROOT_CAUSE"){c=COLORS.root;}
+    else if(a.state==="SYMPTOM"){c=COLORS.symptom;op=.45;}
+    else if(a.state==="FLAPPING"){c=COLORS.flap;}
+    node.style("background-color",c).style("opacity",op);
+    // draw root-cause attribution edges
+    if(a.state==="SYMPTOM"&&a.root_cause){
+      const eid="rc_"+a.root_cause+"_"+a.device;
+      if(cy.getElementById(eid).empty()){
+        cy.add({data:{id:eid,source:a.root_cause,target:a.device},classes:"rc-edge"});
+      } else { cy.getElementById(eid).addClass("rc-edge"); }
+    }
+  }
+}
+
+async function poll(){
+  try{
+    const snap=await (await fetch(API+"/snapshot")).json();
+    render(snap);
+    document.getElementById("conn").textContent="● live";
+    document.getElementById("conn").className="conn on";
+  }catch(e){
+    document.getElementById("conn").textContent="● sidecar offline";
+    document.getElementById("conn").className="conn";
+  }
+}
+
+// scenarios fired straight at the sidecar (self-contained demo)
+const SCN={
+  spur_cascade:{label:"Spur head down",desc:"Unprotected chain — clean cascade",
+    root:"spur-c1",sym:["spur-c2","spur-c3","spur-c4"]},
+  ring_protected:{label:"Ring switch down",desc:"RSTP protects — peers survive",
+    root:"acc-a3",sym:["acc-a2","acc-a4","acc-a5"]},
+  dist_blackhole:{label:"Distribution down",desc:"Ring gateway lost — ring black-holed",
+    root:"dist03",sym:["acc-c1","acc-c2","acc-c3","acc-c4","acc-c5","acc-c6","spur-c1","spur-c2","spur-c3","spur-c4"]},
+  core_redundant:{label:"Core down",desc:"Redundant — nothing lost",
+    root:"core01",sym:["dist01","dist02"]},
+  mixed:{label:"Cascade + noise",desc:"Precision: independent faults survive",
+    root:"dist02",sym:["acc-b1","acc-b2","acc-b3","acc-b4","acc-b5","acc-b6"],extra:["acc-a1","spur-c1"]}
+};
+function buildScenarioButtons(){
+  const box=document.getElementById("scenarios");
+  for(const [k,s] of Object.entries(SCN)){
+    const b=document.createElement("button");
+    b.innerHTML=`${s.label}<small>${s.desc}</small>`;
+    b.onclick=()=>fire(k); box.appendChild(b);
+  }
+}
+async function fire(k){
+  const s=SCN[k]; const now=Date.now()/1000;
+  const evts=[{device:s.root,kind:"NODE_DOWN",ts:now}];
+  for(const d of s.sym) evts.push({device:d,kind:"UNREACHABLE",ts:now+0.3});
+  for(const d of (s.extra||[])) evts.push({device:d,kind:"NODE_DOWN",ts:now+0.6});
+  await fetch(API+"/clear",{method:"POST"});
+  await fetch(API+"/events/batch",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(evts)});
+  poll();
+}
+async function clearAll(){ await fetch(API+"/clear",{method:"POST"}); poll(); }
+
+(async()=>{ await loadTopology(); buildScenarioButtons(); poll(); setInterval(poll,1500); })();
+</script>
+</body>
+</html>
