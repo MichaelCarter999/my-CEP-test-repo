@@ -25,8 +25,14 @@ report: test        ## render the rich HTML test report
 up:                 ## bring up sidecar + webui + prometheus + grafana
 	docker compose up -d --build
 
+up-full-lab:        ## CEP stack on digital-twin (needs Nautobot + Zabbix running)
+	docker compose -f docker-compose.yml -f docker-compose.full-lab.yml up -d --build
+
 down:               ## tear the compose stack down
 	docker compose down
+
+post-deploy:        ## discover clab IPs + auto-seed Nautobot and Zabbix
+	python3 topology/post_deploy.py
 
 clab:               ## deploy the 32-node FRR lab (needs containerlab + sudo)
 	sudo containerlab deploy -t topology/cep-demo.clab.yml

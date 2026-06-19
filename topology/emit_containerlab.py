@@ -18,7 +18,8 @@ import json
 import os
 
 LAB_NAME = "cep-demo"
-FRR_IMAGE = "quay.io/frrouting/frr:9.1.0"
+FRR_IMAGE = "quay.io/frrouting/frr:10.5.0-with-ssh-snmp-zbx-softflowd-iperf3-lldp"
+MGMT_NETWORK = "digital-twin"
 
 
 def main():
@@ -52,6 +53,7 @@ def main():
 
     clab = {
         "name": LAB_NAME,
+        "mgmt": {"network": MGMT_NETWORK},
         "topology": {"nodes": nodes, "links": links},
     }
 

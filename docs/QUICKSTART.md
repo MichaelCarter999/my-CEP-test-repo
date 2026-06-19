@@ -32,7 +32,7 @@ pytest -q                          # 7/7; conftest writes reporting/results.json
 python reporting/render_report.py  # -> reporting/report.html (open or host on Pages)
 ```
 
-## Full lab — containerlab
+## Full lab — containerlab only (no monitoring)
 
 ```bash
 # regenerate the model + clab topology
@@ -50,7 +50,67 @@ docker stop clab-cep-demo-dist03       # black-holes ring C + its spurs
 docker stop clab-cep-demo-acc-a3       # ring reconverges — NO cascade (the contrast)
 ```
 
-## Nautobot
+## Full lab — Nautobot + Zabbix (digital-twin network)
+
+Life-like setup: clab nodes on your `digital-twin` bridge, auto-seeded into Nautobot
+and Zabbix, with the CEP sidecar reachable by container name across the same network.
+
+**Prerequisites** (see [digital-twin QUICKSTART](https://github.com/mmorrow24work/digital-twin-containerlab/blob/main/QUICKSTART-WSL-v2.md)):
+
+- `digital-twin` Docker bridge network exists
+- Nautobot running at `http://localhost:8080`
+- Zabbix 7.4 running at `http://localhost`
+- Custom FRR image built: `quay.io/frrouting/frr:10.5.0-with-ssh-snmp-zbx-softflowd-iperf3-lldp`
+
+```bash
+# ensure the network exists (safe to run if it already does)
+docker network create --driver bridge digital-twin 2>/dev/null || true
+
+# 1. regenerate topology — picks up custom image + digital-twin mgmt network
+python topology/generate_topology.py
+python topology/emit_containerlab.py
+
+# 2. deploy clab — every node joins digital-twin automatically
+cd topology && sudo containerlab deploy -t cep-demo.clab.yml && cd ..
+
+# 3. discover real Docker IPs + auto-seed Nautobot and Zabbix
+export NAUTOBOT_TOKEN=0123456789abcdef0123456789abcdef01234567
+export ZBX_TOKEN=<Zabbix UI > Administration > Users > API tokens>
+python topology/post_deploy.py
+
+# 4. start CEP stack connected to digital-twin
+make up-full-lab
+# (equivalent: docker compose -f docker-compose.yml -f docker-compose.full-lab.yml up -d --build)
+
+# 5. configure Zabbix webhook (one-time, in Zabbix UI)
+#    Administration > Media types > Create media type
+#    Type: Webhook — paste zabbix/cep_webhook_mediatype.js
+#    Webhook URL target: http://cep-sidecar:8080/events
+#    Then: Administration > Actions > Trigger actions — send to the new media type
+```
+
+**Verify everything is wired:**
+
+```bash
+docker network inspect digital-twin | jq '.[0].Containers | keys'  # clab nodes + sidecar visible
+curl -s localhost:8080/snapshot | jq '.metrics'
+```
+
+**Drive faults:**
+
+```bash
+docker stop clab-cep-demo-dist03       # black-holes ring C — mass suppression
+docker stop clab-cep-demo-acc-a3       # ring node — reconverges, NO cascade
+```
+
+**Teardown:**
+
+```bash
+cd topology && sudo containerlab destroy -t cep-demo.clab.yml --cleanup && cd ..
+docker compose -f docker-compose.yml -f docker-compose.full-lab.yml down
+```
+
+## Nautobot (manual seed, standalone)
 
 ```bash
 export NAUTOBOT_URL=http://localhost:8080
@@ -62,7 +122,7 @@ Creates the 35 devices, interfaces, cables, the three patch panels (front/rear
 ports), and the **`upstream-dependency`** relationship — the RCA source of truth
 the engine reads via GraphQL.
 
-## Zabbix
+## Zabbix (manual seed, standalone)
 
 ```bash
 export ZBX_URL=http://localhost/api_jsonrpc.php

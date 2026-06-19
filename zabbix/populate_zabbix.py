@@ -31,6 +31,12 @@ TOPO = os.path.join(HERE, "..", "topology", "topology.json")
 URL = os.environ.get("ZBX_URL", "http://localhost/api_jsonrpc.php")
 TOKEN = os.environ.get("ZBX_TOKEN", "")
 COMMUNITY = os.environ.get("SNMP_COMMUNITY", "cep-demo-ro")
+
+# Runtime IP override: populated by post_deploy.py after clab deploy so real
+# Docker-assigned IPs are used instead of the placeholder 10.0.0.x model values.
+_IP_OVERRIDE: dict = {}
+if os.environ.get("CEP_TOPO_IPS"):
+    _IP_OVERRIDE = json.load(open(os.environ["CEP_TOPO_IPS"]))
 _id = 0
 
 AGENT, SNMP = 1, 2
@@ -72,13 +78,14 @@ def main():
         if call("host.get", {"filter": {"host": [d["name"]]}}):
             continue
 
+        ip = _IP_OVERRIDE.get(d["name"], d["mgmt_ip"])
         interfaces = []
         if "agent" in d["monitoring"]:
             interfaces.append({"type": AGENT, "main": 1, "useip": 1,
-                               "ip": d["mgmt_ip"], "dns": "", "port": "10050"})
+                               "ip": ip, "dns": "", "port": "10050"})
         if "snmp" in d["monitoring"]:
             interfaces.append({"type": SNMP, "main": 1, "useip": 1,
-                               "ip": d["mgmt_ip"], "dns": "", "port": "161",
+                               "ip": ip, "dns": "", "port": "161",
                                "details": {"version": 2, "community": COMMUNITY}})
 
         call("host.create", {
