@@ -38,14 +38,14 @@
   <div class="stat"><div class="v" style="color:#2dd4a7">15</div><div class="l">Passed</div></div>
   <div class="stat"><div class="v" style="color:#f2495c">0</div><div class="l">Failed</div></div>
   <div class="stat"><div class="v" style="color:#f5a524">0</div><div class="l">Skipped</div></div>
-  <div class="stat"><div class="v">283<span style="font-size:13px;color:var(--muted)"> ms</span></div><div class="l">Duration</div></div>
+  <div class="stat"><div class="v">386<span style="font-size:13px;color:var(--muted)"> ms</span></div><div class="l">Duration</div></div>
 </div>
 
         <div class="case">
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_spur_cascade</span>
-            <span class="dur">0.9 ms</span>
+            <span class="dur">1.8 ms</span>
           </div>
           <div class="sum">Unprotected spur head fails — every node down the chain is suppressed as a symptom.</div>
           
@@ -54,7 +54,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_dist_blackhole_high_ratio</span>
-            <span class="dur">0.7 ms</span>
+            <span class="dur">0.5 ms</span>
           </div>
           <div class="sum">Ring gateway fails — whole ring plus its spurs collapse to one root cause (&gt;80% suppression).</div>
           
@@ -81,7 +81,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_precision_independent_faults</span>
-            <span class="dur">0.8 ms</span>
+            <span class="dur">0.5 ms</span>
           </div>
           <div class="sum">Two unrelated faults at once — each attributes to its own root cause, no cross-contamination.</div>
           
@@ -90,7 +90,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_flap_dampening</span>
-            <span class="dur">0.2 ms</span>
+            <span class="dur">0.1 ms</span>
           </div>
           <div class="sum">Interface flap storm collapses into a single FLAPPING alarm.</div>
           
@@ -108,7 +108,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_classify_enrichment_contract</span>
-            <span class="dur">0.2 ms</span>
+            <span class="dur">0.1 ms</span>
           </div>
           <div class="sum">Topology enrichment (/classify): cause, symptom and RSTP-protected independent.</div>
           
@@ -126,7 +126,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_real_fault_chain_spur_cascade</span>
-            <span class="dur">0.6 ms</span>
+            <span class="dur">0.4 ms</span>
           </div>
           <div class="sum">spur-a1 down + a2/a3 cut off -&gt; a1 root cause, a2/a3 symptoms; sibling clean.</div>
           
@@ -135,7 +135,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_recovery_clears</span>
-            <span class="dur">0.5 ms</span>
+            <span class="dur">0.6 ms</span>
           </div>
           <div class="sum">A CLEAR event for a device removes its alarms.</div>
           
@@ -144,7 +144,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_ber_oid_and_roundtrip</span>
-            <span class="dur">0.1 ms</span>
+            <span class="dur">0.3 ms</span>
           </div>
           <div class="sum"></div>
           
@@ -153,7 +153,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_standard_trap_build_parse_classify</span>
-            <span class="dur">0.2 ms</span>
+            <span class="dur">0.6 ms</span>
           </div>
           <div class="sum"></div>
           
@@ -162,7 +162,7 @@
           <div class="case-h">
             <span class="badge" style="background:#2dd4a71a;color:#2dd4a7;border-color:#2dd4a755">PASS</span>
             <span class="name">test_enterprise_placeholder_trap</span>
-            <span class="dur">0.2 ms</span>
+            <span class="dur">0.3 ms</span>
           </div>
           <div class="sum"></div>
           
@@ -176,5 +176,5 @@
           <div class="sum"></div>
           
         </div>
-<footer>Generated 2026-06-14 12:32:20 &middot; CEP demo &middot; github.com/mmorrow24work/CEP</footer>
+<footer>Generated 2026-06-24 14:45:29 &middot; CEP demo &middot; github.com/mmorrow24work/CEP</footer>
 </body></html>

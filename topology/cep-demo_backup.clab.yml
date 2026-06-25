@@ -1,0 +1,375 @@
+name: cep-demo
+
+mgmt:
+  network: digital-twin
+
+topology:
+  defaults:
+    kind: linux
+    image: quay.io/frrouting/frr:9.1.0
+    exec:
+      - sh -c "apk add --no-cache net-snmp net-snmp-tools"
+      - sh -c "echo 'rocommunity cep-demo-ro 0.0.0.0/0' > /etc/snmp/snmpd.conf"
+      - sh -c "echo 'agentaddress udp:161' >> /etc/snmp/snmpd.conf"
+      - snmpd
+
+  nodes:
+    core01:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.28
+      labels:
+        role: core
+        layer: L3
+        protected: 'false'
+    core02:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.29
+      labels:
+        role: core
+        layer: L3
+        protected: 'false'
+    dist01:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.30
+      labels:
+        role: distribution
+        layer: L3
+        protected: 'false'
+    dist02:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.31
+      labels:
+        role: distribution
+        layer: L3
+        protected: 'false'
+    dist03:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.32
+      labels:
+        role: distribution
+        layer: L3
+        protected: 'false'
+    acc-a1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.10
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-a2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.11
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-a3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.12
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-a4:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.13
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-a5:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.14
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-a6:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.15
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.16
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.17
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.18
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b4:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.19
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b5:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.20
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-b6:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.21
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.22
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.23
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.24
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c4:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.25
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c5:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.26
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    acc-c6:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.27
+      labels:
+        role: access
+        layer: L2
+        protected: 'true'
+    spur-a1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.33
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-a2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.34
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-a3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.35
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-b1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.36
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-b2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.37
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-c1:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.38
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-c2:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.39
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-c3:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.40
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+    spur-c4:
+      kind: linux
+      image: quay.io/frrouting/frr:9.1.0
+      mgmt-ipv4: 172.30.0.41
+      labels:
+        role: spur
+        layer: L2
+        protected: 'false'
+  links:
+  - endpoints:
+    - core01:eth1
+    - core02:eth1
+  - endpoints:
+    - dist01:eth1
+    - core01:eth2
+  - endpoints:
+    - dist01:eth2
+    - core02:eth2
+  - endpoints:
+    - dist02:eth1
+    - core01:eth3
+  - endpoints:
+    - dist02:eth2
+    - core02:eth3
+  - endpoints:
+    - dist03:eth1
+    - core01:eth4
+  - endpoints:
+    - dist03:eth2
+    - core02:eth4
+  - endpoints:
+    - acc-a1:eth2
+    - acc-a2:eth3
+  - endpoints:
+    - acc-a2:eth2
+    - acc-a3:eth3
+  - endpoints:
+    - acc-a3:eth2
+    - acc-a4:eth3
+  - endpoints:
+    - acc-a4:eth2
+    - acc-a5:eth3
+  - endpoints:
+    - acc-a5:eth2
+    - acc-a6:eth3
+  - endpoints:
+    - acc-a6:eth2
+    - acc-a1:eth3
+  - endpoints:
+    - acc-b1:eth2
+    - acc-b2:eth3
+  - endpoints:
+    - acc-b2:eth2
+    - acc-b3:eth3
+  - endpoints:
+    - acc-b3:eth2
+    - acc-b4:eth3
+  - endpoints:
+    - acc-b4:eth2
+    - acc-b5:eth3
+  - endpoints:
+    - acc-b5:eth2
+    - acc-b6:eth3
+  - endpoints:
+    - acc-b6:eth2
+    - acc-b1:eth3
+  - endpoints:
+    - acc-c1:eth2
+    - acc-c2:eth3
+  - endpoints:
+    - acc-c2:eth2
+    - acc-c3:eth3
+  - endpoints:
+    - acc-c3:eth2
+    - acc-c4:eth3
+  - endpoints:
+    - acc-c4:eth2
+    - acc-c5:eth3
+  - endpoints:
+    - acc-c5:eth2
+    - acc-c6:eth3
+  - endpoints:
+    - acc-c6:eth2
+    - acc-c1:eth3
+  - endpoints:
+    - acc-a4:eth4
+    - spur-a1:eth1
+  - endpoints:
+    - spur-a1:eth4
+    - spur-a2:eth1
+  - endpoints:
+    - spur-a2:eth4
+    - spur-a3:eth1
+  - endpoints:
+    - acc-b3:eth4
+    - spur-b1:eth1
+  - endpoints:
+    - spur-b1:eth4
+    - spur-b2:eth1
+  - endpoints:
+    - acc-c5:eth4
+    - spur-c1:eth1
+  - endpoints:
+    - spur-c1:eth4
+    - spur-c2:eth1
+  - endpoints:
+    - spur-c2:eth4
+    - spur-c3:eth1
+  - endpoints:
+    - spur-c3:eth4
+    - spur-c4:eth1

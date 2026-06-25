@@ -1,5 +1,15 @@
 name: cep-demo
+mgmt:
+  network: digital-twin
 topology:
+  defaults:
+    kind: linux
+    image: quay.io/frrouting/frr:9.1.0
+    exec:
+    - sh -c "apk add --no-cache net-snmp net-snmp-tools"
+    - sh -c "echo 'rocommunity cep-demo-ro 0.0.0.0/0' > /etc/snmp/snmpd.conf"
+    - sh -c "echo 'agentaddress udp:161' >> /etc/snmp/snmpd.conf"
+    - snmpd
   nodes:
     core01:
       kind: linux
@@ -8,6 +18,7 @@ topology:
         role: core
         layer: L3
         protected: 'false'
+      mgmt-ipv4: 172.30.0.10
     core02:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -15,6 +26,7 @@ topology:
         role: core
         layer: L3
         protected: 'false'
+      mgmt-ipv4: 172.30.0.11
     dist01:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -22,6 +34,7 @@ topology:
         role: distribution
         layer: L3
         protected: 'false'
+      mgmt-ipv4: 172.30.0.12
     dist02:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -29,6 +42,7 @@ topology:
         role: distribution
         layer: L3
         protected: 'false'
+      mgmt-ipv4: 172.30.0.13
     dist03:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -36,6 +50,7 @@ topology:
         role: distribution
         layer: L3
         protected: 'false'
+      mgmt-ipv4: 172.30.0.14
     acc-a1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -43,6 +58,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.15
     acc-a2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -50,6 +66,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.16
     acc-a3:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -57,6 +74,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.17
     acc-a4:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -64,6 +82,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.18
     acc-a5:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -71,6 +90,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.19
     acc-a6:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -78,6 +98,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.20
     acc-b1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -85,6 +106,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.21
     acc-b2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -92,6 +114,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.22
     acc-b3:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -99,6 +122,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.23
     acc-b4:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -106,6 +130,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.24
     acc-b5:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -113,6 +138,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.25
     acc-b6:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -120,6 +146,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.26
     acc-c1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -127,6 +154,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.27
     acc-c2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -134,6 +162,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.28
     acc-c3:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -141,6 +170,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.29
     acc-c4:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -148,6 +178,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.30
     acc-c5:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -155,6 +186,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.31
     acc-c6:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -162,6 +194,7 @@ topology:
         role: access
         layer: L2
         protected: 'true'
+      mgmt-ipv4: 172.30.0.32
     spur-a1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -169,6 +202,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.33
     spur-a2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -176,6 +210,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.34
     spur-a3:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -183,6 +218,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.35
     spur-b1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -190,6 +226,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.36
     spur-b2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -197,6 +234,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.37
     spur-c1:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -204,6 +242,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.38
     spur-c2:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -211,6 +250,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.39
     spur-c3:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -218,6 +258,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.40
     spur-c4:
       kind: linux
       image: quay.io/frrouting/frr:9.1.0
@@ -225,6 +266,7 @@ topology:
         role: spur
         layer: L2
         protected: 'false'
+      mgmt-ipv4: 172.30.0.41
   links:
   - endpoints:
     - core01:eth1

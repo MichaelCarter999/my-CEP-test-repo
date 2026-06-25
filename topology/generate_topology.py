@@ -40,7 +40,7 @@ from typing import Optional
 import yaml
 
 SITE = "demo-dc1"
-MGMT_PREFIX = "10.0.0"          # mgmt /24 for SNMP + agent
+MGMT_PREFIX = "172.30.0"          # mgmt /24 for SNMP + agent
 LOOPBACK_PREFIX = "10.255"      # router-id / loopbacks
 
 

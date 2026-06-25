@@ -15,7 +15,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.10",
+      "mgmt_ip": "172.30.0.10",
       "monitoring": [
         "agent",
         "snmp"
@@ -55,7 +55,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.11",
+      "mgmt_ip": "172.30.0.11",
       "monitoring": [
         "agent",
         "snmp"
@@ -95,7 +95,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.12",
+      "mgmt_ip": "172.30.0.12",
       "monitoring": [
         "agent",
         "snmp"
@@ -129,7 +129,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.13",
+      "mgmt_ip": "172.30.0.13",
       "monitoring": [
         "agent",
         "snmp"
@@ -163,7 +163,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.14",
+      "mgmt_ip": "172.30.0.14",
       "monitoring": [
         "agent",
         "snmp"
@@ -272,7 +272,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.15",
+      "mgmt_ip": "172.30.0.15",
       "monitoring": [
         "snmp"
       ],
@@ -305,7 +305,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.16",
+      "mgmt_ip": "172.30.0.16",
       "monitoring": [
         "snmp"
       ],
@@ -332,7 +332,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.17",
+      "mgmt_ip": "172.30.0.17",
       "monitoring": [
         "snmp"
       ],
@@ -359,7 +359,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.18",
+      "mgmt_ip": "172.30.0.18",
       "monitoring": [
         "snmp"
       ],
@@ -392,7 +392,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.19",
+      "mgmt_ip": "172.30.0.19",
       "monitoring": [
         "snmp"
       ],
@@ -419,7 +419,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.20",
+      "mgmt_ip": "172.30.0.20",
       "monitoring": [
         "snmp"
       ],
@@ -446,7 +446,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.21",
+      "mgmt_ip": "172.30.0.21",
       "monitoring": [
         "snmp"
       ],
@@ -479,7 +479,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.22",
+      "mgmt_ip": "172.30.0.22",
       "monitoring": [
         "snmp"
       ],
@@ -506,7 +506,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.23",
+      "mgmt_ip": "172.30.0.23",
       "monitoring": [
         "snmp"
       ],
@@ -539,7 +539,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.24",
+      "mgmt_ip": "172.30.0.24",
       "monitoring": [
         "snmp"
       ],
@@ -566,7 +566,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.25",
+      "mgmt_ip": "172.30.0.25",
       "monitoring": [
         "snmp"
       ],
@@ -593,7 +593,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.26",
+      "mgmt_ip": "172.30.0.26",
       "monitoring": [
         "snmp"
       ],
@@ -620,7 +620,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.27",
+      "mgmt_ip": "172.30.0.27",
       "monitoring": [
         "snmp"
       ],
@@ -653,7 +653,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.28",
+      "mgmt_ip": "172.30.0.28",
       "monitoring": [
         "snmp"
       ],
@@ -680,7 +680,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.29",
+      "mgmt_ip": "172.30.0.29",
       "monitoring": [
         "snmp"
       ],
@@ -707,7 +707,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.30",
+      "mgmt_ip": "172.30.0.30",
       "monitoring": [
         "snmp"
       ],
@@ -734,7 +734,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.31",
+      "mgmt_ip": "172.30.0.31",
       "monitoring": [
         "snmp"
       ],
@@ -767,7 +767,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.32",
+      "mgmt_ip": "172.30.0.32",
       "monitoring": [
         "snmp"
       ],
@@ -794,7 +794,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.33",
+      "mgmt_ip": "172.30.0.33",
       "monitoring": [
         "snmp"
       ],
@@ -821,7 +821,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.34",
+      "mgmt_ip": "172.30.0.34",
       "monitoring": [
         "snmp"
       ],
@@ -848,7 +848,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.35",
+      "mgmt_ip": "172.30.0.35",
       "monitoring": [
         "snmp"
       ],
@@ -869,7 +869,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.36",
+      "mgmt_ip": "172.30.0.36",
       "monitoring": [
         "snmp"
       ],
@@ -896,7 +896,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.37",
+      "mgmt_ip": "172.30.0.37",
       "monitoring": [
         "snmp"
       ],
@@ -917,7 +917,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.38",
+      "mgmt_ip": "172.30.0.38",
       "monitoring": [
         "snmp"
       ],
@@ -944,7 +944,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.39",
+      "mgmt_ip": "172.30.0.39",
       "monitoring": [
         "snmp"
       ],
@@ -971,7 +971,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.40",
+      "mgmt_ip": "172.30.0.40",
       "monitoring": [
         "snmp"
       ],
@@ -998,7 +998,7 @@
       "vendor": "FRR",
       "platform": "frr-9",
       "site": "demo-dc1",
-      "mgmt_ip": "10.0.0.41",
+      "mgmt_ip": "172.30.0.41",
       "monitoring": [
         "snmp"
       ],

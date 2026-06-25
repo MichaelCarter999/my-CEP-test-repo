@@ -1,0 +1,19 @@
+# Full-lab overlay — joins the CEP sidecar to the digital-twin network so Zabbix
+# can POST webhooks to it and it can query Nautobot GraphQL by container name.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.full-lab.yml up -d --build
+#   docker compose -f docker-compose.yml -f docker-compose.full-lab.yml down
+#
+# Prerequisites: digital-twin network + Nautobot + Zabbix already running.
+# See docs/QUICKSTART.md — "Full lab — Nautobot + Zabbix (digital-twin network)"
+
+networks:
+  digital-twin:
+    external: true
+
+services:
+  sidecar:
+    networks:
+      - cep
+      - digital-twin
