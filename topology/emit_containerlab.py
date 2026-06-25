@@ -14,6 +14,7 @@ Killing a node for a demo:
     docker stop clab-cep-demo-dist03       # black-holes ring C
     docker stop clab-cep-demo-acc-a3       # ring reconverges (no cascade)
 """
+
 import json
 import os
 

@@ -20,7 +20,7 @@ import random
 import time
 import urllib.request
 
-SIDECAR = os.environ.get("SIDECAR_URL", "http://localhost:8080")
+SIDECAR = os.environ.get("SIDECAR_URL", "http://localhost:8100")
 HERE = os.path.dirname(os.path.abspath(__file__))
 TOPO = os.environ.get("TOPOLOGY_FILE",
                       os.path.join(HERE, "..", "topology", "topology.json"))

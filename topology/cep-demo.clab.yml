@@ -250,83 +250,83 @@ topology:
     - dist03:eth2
     - core02:eth4
   - endpoints:
-    - acc-a1:eth2
-    - acc-a2:eth3
+    - acc-a1:eth1
+    - acc-a2:eth1
   - endpoints:
     - acc-a2:eth2
-    - acc-a3:eth3
+    - acc-a3:eth1
   - endpoints:
     - acc-a3:eth2
-    - acc-a4:eth3
+    - acc-a4:eth1
   - endpoints:
     - acc-a4:eth2
-    - acc-a5:eth3
+    - acc-a5:eth1
   - endpoints:
     - acc-a5:eth2
-    - acc-a6:eth3
+    - acc-a6:eth1
   - endpoints:
     - acc-a6:eth2
-    - acc-a1:eth3
+    - acc-a1:eth2
   - endpoints:
-    - acc-b1:eth2
-    - acc-b2:eth3
+    - acc-b1:eth1
+    - acc-b2:eth1
   - endpoints:
     - acc-b2:eth2
-    - acc-b3:eth3
+    - acc-b3:eth1
   - endpoints:
     - acc-b3:eth2
-    - acc-b4:eth3
+    - acc-b4:eth1
   - endpoints:
     - acc-b4:eth2
-    - acc-b5:eth3
+    - acc-b5:eth1
   - endpoints:
     - acc-b5:eth2
-    - acc-b6:eth3
+    - acc-b6:eth1
   - endpoints:
     - acc-b6:eth2
-    - acc-b1:eth3
+    - acc-b1:eth2
   - endpoints:
-    - acc-c1:eth2
-    - acc-c2:eth3
+    - acc-c1:eth1
+    - acc-c2:eth1
   - endpoints:
     - acc-c2:eth2
-    - acc-c3:eth3
+    - acc-c3:eth1
   - endpoints:
     - acc-c3:eth2
-    - acc-c4:eth3
+    - acc-c4:eth1
   - endpoints:
     - acc-c4:eth2
-    - acc-c5:eth3
+    - acc-c5:eth1
   - endpoints:
     - acc-c5:eth2
-    - acc-c6:eth3
+    - acc-c6:eth1
   - endpoints:
     - acc-c6:eth2
-    - acc-c1:eth3
+    - acc-c1:eth2
   - endpoints:
-    - acc-a4:eth4
+    - acc-a4:eth3
     - spur-a1:eth1
   - endpoints:
-    - spur-a1:eth4
+    - spur-a1:eth2
     - spur-a2:eth1
   - endpoints:
-    - spur-a2:eth4
+    - spur-a2:eth2
     - spur-a3:eth1
   - endpoints:
-    - acc-b3:eth4
+    - acc-b3:eth3
     - spur-b1:eth1
   - endpoints:
-    - spur-b1:eth4
+    - spur-b1:eth2
     - spur-b2:eth1
   - endpoints:
-    - acc-c5:eth4
+    - acc-c5:eth3
     - spur-c1:eth1
   - endpoints:
-    - spur-c1:eth4
+    - spur-c1:eth2
     - spur-c2:eth1
   - endpoints:
-    - spur-c2:eth4
+    - spur-c2:eth2
     - spur-c3:eth1
   - endpoints:
-    - spur-c3:eth4
+    - spur-c3:eth2
     - spur-c4:eth1
